@@ -1,0 +1,28 @@
+<table id="dataTable5">
+  <thead>
+    <tr>
+        <th>職務</th>
+        <th>學類／證照</th>
+        <th>係數</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(document).ready( function () {
+    $('#dataTable5').DataTable({
+        ajax: {
+          url: '/data/job_regression_new.json',
+          dataSrc: '',
+        },
+        columns: [ {data:'職務'}, {data:'學類／證照'}, {data:'係數'} ],
+        fixedHeader: true,
+        orderMulti: true,
+      });
+  } );
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>

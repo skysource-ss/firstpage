@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=">
+
+    <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+    <script type="text/javascript" charset="utf8" src="DataTables/datatables.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          
+
+          <h1 id="project_title">1111 履歷分析</h1>
+          <h2 id="project_tagline">履歷優勢分析平台</h2>
+
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1 id="相關性指標npmi">相關性指標：NPMI</h1>
+<p>PMI (Pointwise Mutual Information) 可用來描述兩變數間的相關性：</p>
+
+<p>$PMI(x, y) = \log \frac {p(x,y)}{p(x)p(y)},$</p>
+
+<p>$-\infty &lt; PMI(x, y) &lt; \min[-\log p(x), -\log p(y)]$</p>
+
+<p>但因不同變數間的 PMI 值域不同，無法跨變數比較，故採用 NPMI (Normalized PMI):</p>
+
+<p>$NPMI(x, y) = \frac {PMI(x, y)}{-\log p(x, y)}, -1 &lt; NPMI(x, y) &lt; 1$</p>
+
+<p>在實驗中，NPMI 能更好的表達<code class="highlighter-rouge">職務</code>與<code class="highlighter-rouge">科系類別</code>及<code class="highlighter-rouge">專業證照</code>的關係</p>
+
+<h1 id="競爭力分析">競爭力分析</h1>
+<h2 id="q11我就讀的科系對哪些工作更相關">Q1.1：我就讀的科系，對哪些工作更相關？</h2>
+<p>對每個職業進行「科系的相關性排名」，可橫向比較具更高相關度的職業。<br />
+範例：<code class="highlighter-rouge">醫藥工程學類</code>, <code class="highlighter-rouge">會計學類</code>, <code class="highlighter-rouge">風險管理學類</code>, <code class="highlighter-rouge">食品科學類</code>, <code class="highlighter-rouge">競技運動學類</code>, <code class="highlighter-rouge">公共衛生學類</code></p>
+
+<table id="dataTable1">
+  <thead>
+    <tr>
+        <th>職務小類名稱</th>
+        <th>科系類別</th>
+        <th>科系排名</th>
+        <th>npmi</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(document).ready( function () {
+    $('#dataTable1').DataTable({
+        ajax: {
+          url: '/data/job_dept_ranking.json',
+          dataSrc: '',
+        },
+        columns: [ {data:'職務小類名稱'}, {data:'科系類別'}, {data:'科系排名'}, {data:'npmi'} ],
+        fixedHeader: true,
+        orderMulti: true,
+      });
+  } );
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+
+<h2 id="q12哪些科系對我有興趣的職業更相關">Q1.2：哪些科系，對我有興趣的職業更相關？</h2>
+<p>[1] 輸入關鍵字，透過 FastText 找出相似的職業</p>
+
+<p><img src="/data/fasttext_1.png" alt="醫療" />
+  <img src="/data/fasttext_2.png" alt="食品" /></p>
+
+<p>[2] 選擇職業 (範例： <code class="highlighter-rouge">醫療器材研發工程師</code>)</p>
+
+<table id="dataTable3">
+  <thead>
+    <tr>
+        <th>職務小類名稱</th>
+        <th>科系類別</th>
+        <th>npmi</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(document).ready( function () {
+    $('#dataTable3').DataTable({
+        ajax: {
+          url: '/data/job_dept_npmi.json',
+          dataSrc: '',
+        },
+        columns: [ {data:'職務小類名稱'}, {data:'科系類別'}, {data:'npmi'} ],
+        fixedHeader: true,
+        orderMulti: true,
+      });
+  } );
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+
+<h2 id="q21我擁有的證照在哪些工作更相關">Q2.1：我擁有的證照，在哪些工作更相關？</h2>
+<p>範例：<code class="highlighter-rouge">甲級廢水處理專責人員</code>, <code class="highlighter-rouge">結構型商品銷售人員</code>, <code class="highlighter-rouge">高考會計師</code></p>
+
+<table id="dataTable2">
+  <thead>
+    <tr>
+        <th>職務小類名稱</th>
+        <th>專業證照</th>
+        <th>證照排名</th>
+        <th>npmi</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(document).ready( function () {
+    $('#dataTable2').DataTable({
+        ajax: {
+          url: '/data/job_cert_ranking.json',
+          dataSrc: '',
+        },
+        columns: [ {data:'職務小類名稱'}, {data:'專業證照'}, {data:'證照排名'}, {data:'npmi'} ],
+        fixedHeader: true,
+        orderMulti: true,
+      });
+  } );
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+
+<h2 id="q22哪些證照對我有興趣的職業更相關">Q2.2：哪些證照，對我有興趣的職業更相關？</h2>
+<p>選擇職業 (範例： <code class="highlighter-rouge">環保／環境工程師／技師</code>, <code class="highlighter-rouge">投資理財人員</code>, <code class="highlighter-rouge">會計師</code>)</p>
+
+<table id="dataTable4">
+  <thead>
+    <tr>
+        <th>職務小類名稱</th>
+        <th>專業證照</th>
+        <th>npmi</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(document).ready( function () {
+    $('#dataTable4').DataTable({
+        ajax: {
+          url: '/data/job_cert_npmi.json',
+          dataSrc: '',
+        },
+        columns: [ {data:'職務小類名稱'}, {data:'專業證照'}, {data:'npmi'} ],
+        fixedHeader: true,
+        orderMulti: true,
+      });
+  } );
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+
+<h2 id="最後用特徵選擇找出加分項目">最後，用特徵選擇找出「加分項目」</h2>
+<p>除了利用 NPMI 估計相關度，Linear SVM 以及特徵選擇，找出每份工作中最具有預測能力的學類/證照<br />
+範例： <code class="highlighter-rouge">環保／環境工程師／技師</code>, <code class="highlighter-rouge">投資理財人員</code>, <code class="highlighter-rouge">會計師</code></p>
+
+<table id="dataTable5">
+  <thead>
+    <tr>
+        <th>職務</th>
+        <th>學類／證照</th>
+        <th>係數</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(document).ready( function () {
+    $('#dataTable5').DataTable({
+        ajax: {
+          url: '/data/job_regression_new.json',
+          dataSrc: '',
+        },
+        columns: [ {data:'職務'}, {data:'學類／證照'}, {data:'係數'} ],
+        fixedHeader: true,
+        orderMulti: true,
+      });
+  } );
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+
+
+      </section>
+    </div>
+    
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+  </body>
+</html>

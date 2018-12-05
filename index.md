@@ -1,123 +1,49 @@
 ---
-layout: default
+layout: analysis
 ---
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+# 相關性指標：NPMI
+PMI (Pointwise Mutual Information) 可用來描述兩變數間的相關性：
 
-[Link to another page](./another-page.html).
+$PMI(x, y) = \log \frac {p(x,y)}{p(x)p(y)},$  
 
-There should be whitespace between paragraphs.
+$-\infty < PMI(x, y) < \min[-\log p(x), -\log p(y)]$ 
 
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
+但因不同變數間的 PMI 值域不同，無法跨變數比較，故採用 NPMI (Normalized PMI):
 
-# Header 1
+$NPMI(x, y) = \frac {PMI(x, y)}{-\log p(x, y)}, -1 < NPMI(x, y) < 1$  
 
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+在實驗中，NPMI 能更好的表達`職務`與`科系類別`及`專業證照`的關係
 
-## Header 2
+# 競爭力分析
+## Q1.1：我就讀的科系，對哪些工作更相關？
+對每個職業進行「科系的相關性排名」，可橫向比較具更高相關度的職業。  
+範例：`醫藥工程學類`, `會計學類`, `風險管理學類`, `食品科學類`, `競技運動學類`, `公共衛生學類`
 
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
+{% include table1.html %}
 
-### Header 3
+## Q1.2：哪些科系，對我有興趣的職業更相關？
+[1] 輸入關鍵字，透過 FastText 找出相似的職業
 
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
-```
+  ![醫療](/data/fasttext_1.png)
+  ![食品](/data/fasttext_2.png)
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
-```
+[2] 選擇職業 (範例： `醫療器材研發工程師`)
 
-#### Header 4
+{% include table3.html %}
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
+## Q2.1：我擁有的證照，在哪些工作更相關？  
+範例：`甲級廢水處理專責人員`, `結構型商品銷售人員`, `高考會計師`
 
-##### Header 5
+{% include table2.html %}
 
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
+## Q2.2：哪些證照，對我有興趣的職業更相關？
+選擇職業 (範例： `環保／環境工程師／技師`, `投資理財人員`, `會計師`)
 
-###### Header 6
+{% include table4.html %}
 
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
+## 最後，用特徵選擇找出「加分項目」
+除了利用 NPMI 估計相關度，Linear SVM 以及特徵選擇，找出每份工作中最具有預測能力的學類/證照  
+範例： `環保／環境工程師／技師`, `投資理財人員`, `會計師`
 
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![Octocat](https://assets-cdn.github.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![Branching](https://guides.github.com/activities/hello-world/branching.png)
-
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
-
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
-
-```
-The final element.
-```
+{% include table5.html %}

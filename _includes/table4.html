@@ -1,0 +1,28 @@
+<table id="dataTable4">
+  <thead>
+    <tr>
+        <th>職務小類名稱</th>
+        <th>專業證照</th>
+        <th>npmi</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(document).ready( function () {
+    $('#dataTable4').DataTable({
+        ajax: {
+          url: '/data/job_cert_npmi.json',
+          dataSrc: '',
+        },
+        columns: [ {data:'職務小類名稱'}, {data:'專業證照'}, {data:'npmi'} ],
+        fixedHeader: true,
+        orderMulti: true,
+      });
+  } );
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>

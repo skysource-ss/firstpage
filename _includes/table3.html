@@ -1,0 +1,28 @@
+<table id="dataTable3">
+  <thead>
+    <tr>
+        <th>職務小類名稱</th>
+        <th>科系類別</th>
+        <th>npmi</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(document).ready( function () {
+    $('#dataTable3').DataTable({
+        ajax: {
+          url: '/data/job_dept_npmi.json',
+          dataSrc: '',
+        },
+        columns: [ {data:'職務小類名稱'}, {data:'科系類別'}, {data:'npmi'} ],
+        fixedHeader: true,
+        orderMulti: true,
+      });
+  } );
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>

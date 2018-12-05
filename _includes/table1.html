@@ -1,0 +1,29 @@
+<table id="dataTable1">
+  <thead>
+    <tr>
+        <th>職務小類名稱</th>
+        <th>科系類別</th>
+        <th>科系排名</th>
+        <th>npmi</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(document).ready( function () {
+    $('#dataTable1').DataTable({
+        ajax: {
+          url: '/data/job_dept_ranking.json',
+          dataSrc: '',
+        },
+        columns: [ {data:'職務小類名稱'}, {data:'科系類別'}, {data:'科系排名'}, {data:'npmi'} ],
+        fixedHeader: true,
+        orderMulti: true,
+      });
+  } );
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
